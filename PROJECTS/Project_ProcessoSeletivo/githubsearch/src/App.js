@@ -7,36 +7,42 @@ class SearchGithub extends Component {
     super(props)
     this.state = {
       repositoryList : [],
-      repositoryName : ''
+      userName : '',
+      title : 'BUSQUE SEUS REPOSITÓRIOS'
     }
   }
 
-  searchRepositories = (element) =>
-  {
-    element.preventDefault();
+  changeTitle = () => {
+    this.setState({title : `REPOSITÓRIOS DO: ${this.state.userName}`})
+  }
+
+  searchRepositories = (event) => {
+    event.preventDefault();
   
     console.log('Está buscando!')
   
     // aqui buscará o repositório do usuário
-    fetch('https://api.github.com/users/' + this.state.repositoryName + '/repos')
+    fetch('https://api.github.com/users/' + this.state.userName + '/repos')
   
     .then(response => response.json())
   
-    .then(list => this.setState({repositoryList : list}))
+    .then(data => this.setState({repositoryList : data}))
   
     .catch(error => console.log(error))
+    
   }
 
   updateRepositoryName = async (repository) => 
   {
-    await this.setState({repositoryName : repository.target.value})
+    await this.setState({userName : repository.target.value})
     console.log('está sendo armazenado no "repositoryName"!')
   }
 
   cleanFields = () => {
     this.setState({
         repositoryList : [],
-        repositoryName : ''
+        userName : '',
+        title : 'BUSQUE SEUS REPOSITÓRIOS'
     })
 
     console.log('Os states foram resetados!')
@@ -44,55 +50,66 @@ class SearchGithub extends Component {
 
   render(){
     return(
-      <div className = "App">
+      <div>
         <main>
-  
-          <section>
-            <h2>GitHub Finder</h2>
-            <form onSubmit = {this.searchRepositories}>
-              <div>
-                <input
-                type = "text"
-                value = {this.state.repositoryName}
-                onChange = {this.updateUserName}
-                placeholder = "Username"
-                />
-                {
-                  <button onClick={this.searchRepositories} type="submit" disabled={this.state.repositoryName === '' ? 'none' : ''}>Buscar</button>
-                }
-                <button style={{color: "white", fontWeight:"600", height: "43px", backgroundColor: "red"}} type="button" onClick={this.cleanFields}>Cancelar</button>
-              </div>
+          <section className = "search-user">
+            <div className="content centralize">
+              <form onSubmit = {this.searchRepositories} onClick={this.state.userName !== '' ? this.changeTitle : 'BUSQUE SEUS REPOSITÓRIOS'} className="centralize">
+                <h2>{this.state.title}</h2>
+                <div>
+                  <input
+                  type = "text"
+                  value = {this.state.userName}
+                  onChange = {this.updateRepositoryName}
+                  placeholder = "username"
+                  />
+                  {
+                    <button onClick={this.searchRepositories} type="submit" disabled={this.state.userName === '' ? 'none' : ''}>Buscar</button>
+                  }
+                  <button type="button" onClick={this.cleanFields}>Cancelar</button>
+                </div>
             </form>
+            </div>
           </section>
 
-          <section>
-            <table>
-
+          <section className = "listing">
+            <table className = "content">
               <thead>
-                <tr>
-                  <th>ID:</th>
-                  <th>NOME DO REPOSITÓRIO:</th>
-                  <th>DESCRIÇÃO:</th>
-                  <th>DATA DE CRIAÇÃO:</th>
-                  <th>TAMANHO:</th>
-                </tr>
+                {/* <tr>
+                  <h4>REPOSITÓRIOS DO: <span>{this.state.userName}</span></h4>
+                </tr> */}
               </thead>
 
               <tbody>
-                {  this.state.repositoryList.map((repository) => {           
+                {
+                  this.state.repositoryList.map((repository) => {
                     return(
-                      <tr key={repository.id}>
-                        <td >{repository.id}</td>
-                        <td>{repository.name}</td>
-                        <td>{repository.description}</td>
-                        <td>{repository.created_at}</td>
-                        <td>{repository.size}</td>
-                      </tr>
-                    )
-                  })
-                }
-              </tbody>
+                      <div className="repository" key={repository.id}>
+                        <div className="data">
+                          <p><strong>ID:</strong><br />{repository.id}</p>
+                        </div>
 
+                        <div className="data">
+                          <p><strong>NOME:</strong><br />{repository.name}</p>
+                        </div>
+
+                        <div className="data">
+                          <p><strong>DESCRIÇÃO:</strong><br />{repository.description}</p>
+                        </div>
+
+                        <div className="data">
+                          <p><strong>CRIADO EM:</strong><br />{repository.created_at}</p>
+                        </div>
+
+                        <div className="data">
+                          <p><strong>TAMANHO:</strong><br />{repository.size}</p>
+                        </div>
+                      </div>
+                    )
+                  }).reverse()
+                }
+
+              </tbody>
             </table>        
           </section>
   
@@ -107,9 +124,7 @@ function App() {
   return (
     <div className="App">
       <header className="App-header">
-        <p>
           <SearchGithub />
-        </p>
       </header>
     </div>
   );
