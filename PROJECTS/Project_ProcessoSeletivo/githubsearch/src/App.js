@@ -27,10 +27,10 @@ class SearchGithub extends Component {
     .catch(error => console.log(error))
   }
 
-  updateUserName = async (name) => 
+  updateRepositoryName = async (repository) => 
   {
-    await this.setState({repositoryName : name.target.value})
-    console.log(this.state.repositoryName)
+    await this.setState({repositoryName : repository.target.value})
+    console.log('está sendo armazenado no "repositoryName"!')
   }
 
   cleanFields = () => {
@@ -67,6 +67,7 @@ class SearchGithub extends Component {
 
           <section>
             <table>
+
               <thead>
                 <tr>
                   <th>ID:</th>
@@ -76,6 +77,7 @@ class SearchGithub extends Component {
                   <th>TAMANHO:</th>
                 </tr>
               </thead>
+
               <tbody>
                 {  this.state.repositoryList.map((repository) => {           
                     return(
@@ -90,6 +92,7 @@ class SearchGithub extends Component {
                   })
                 }
               </tbody>
+
             </table>        
           </section>
   
@@ -106,7 +109,6 @@ function App() {
       <header className="App-header">
         <p>
           <SearchGithub />
-
         </p>
       </header>
     </div>
