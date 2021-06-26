@@ -22,7 +22,7 @@ class SearchGithub extends Component {
     console.log('Está buscando!')
   
     // aqui buscará o repositório do usuário
-    fetch('https://api.github.com/users/' + this.state.userName + '/repos')
+    fetch('https://api.github.com/users/' + this.state.userName + '/repos?per_page=10')
   
     .then(response => response.json())
   
