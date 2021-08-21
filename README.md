@@ -1,2 +1,2 @@
-# SENAI_SEMESTER2_SPRINT4_JAVASCRIPT
-All the practical material that involved FRONT-END with JavaScript and NodeJs developed during the 4th SPRINT of the 2nd SEMESTER of the Systems Development technical course.
+# SENAI_SEMESTRE2_SPRINT4_JAVASCRIPT
+Todo o material prático que envolveu o FRONT-END com JavaScript e NodeJs desenvolvido durante o 4º SPRINT do 2º SEMESTRE do curso técnico de Desenvolvimento de Sistemas.
